@@ -28,11 +28,16 @@
 </form>
 
 <h2 class="mb-3">Crear nueva base de datos</h2>
-<form method="post" class="mb-4">
+<form method="post" action="{{ url_for('main.crear_bd') }}" class="mb-4">
   <div class="mb-3">
     <input type="text" name="db_name" placeholder="Nombre base (.db opcional)" required class="form-control" />
   </div>
   <button type="submit" class="btn btn-primary">Crear base de datos</button>
+</form>
+
+<!-- NUEVO FORMULARIO PARA VACIAR LA BASE -->
+<form action="{{ url_for('main.vaciar_bd') }}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar todo el contenido? Esta acción no se puede deshacer.');" class="mb-4">
+  <button type="submit" class="btn btn-danger">Vaciar Base de Datos</button>
 </form>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -46,12 +51,9 @@
 {% endwith %}
 
 <div class="volver-centro">
-        <a href="javascript:history.back()" class="btn btn-secondary me-2">← Volver</a>        
-        <a href="/cajas" class="btn-brown">Ir a cajas📦</a>
-
+    <a href="javascript:history.back()" class="btn btn-secondary me-2">← Volver</a>        
+    <a href="/cajas" class="btn-brown">Ir a cajas📦</a>
 </div>  
 
-
-
-
 {% endblock %}
+

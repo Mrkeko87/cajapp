@@ -1,6 +1,9 @@
 import os
 from flask import Flask, session
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, 'databases', 'default.db')
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'clave-secreta'

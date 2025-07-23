@@ -662,6 +662,72 @@ def buscar_caja():
         return {'error': 'Parámetro requerido'}, 400
 
 
+@bp.route('/vaciar_bd', methods=['POST'])
+def vaciar_bd():
+    db = get_db()
+    # Borra todo el contenido de las tablas. Asegúrate de incluir todas las tablas que quieres vaciar.
+    try:
+        db.execute('DELETE FROM objetos')
+        db.execute('DELETE FROM cajas')
+        db.execute('DELETE FROM cajas_borradas')
+        db.execute('DELETE FROM sq')
+        
+        
+        # Si tienes más tablas, agregalas aquí
+        db.commit()
+        flash('¡Base de datos vaciada correctamente!', 'success')
+    except Exception as e:
+        db.rollback()
+        flash(f'Error al vaciar la base de datos: {e}', 'error')
+    return redirect(url_for('main.seleccionar_db'))
+  
+
+
+import shutil
+import os
+from flask import current_app, flash, redirect, url_for, request
+
+@bp.route('/crear_bd', methods=['POST'])
+def crear_bd():
+    nombre_nueva_bd = request.form.get('db_name', '').strip()
+    if not nombre_nueva_bd:
+        flash('Debes ingresar un nombre para la base de datos.', 'error')
+        return redirect(url_for('main.seleccionar_db'))
+
+    if not nombre_nueva_bd.endswith('.db'):
+        nombre_nueva_bd += '.db'
+
+    # Rutas corregidas
+    ruta_default = os.path.abspath(os.path.join(current_app.root_path, '..', 'databases', 'default.db'))
+    ruta_nueva_bd = os.path.abspath(os.path.join(current_app.root_path, '..', 'databases', nombre_nueva_bd))
+
+
+    # Verificar que no exista la base nueva para no sobrescribir
+    if os.path.exists(ruta_nueva_bd):
+        flash('Ya existe una base con ese nombre.', 'error')
+        return redirect(url_for('main.seleccionar_db'))
+
+    try:
+        # Copiar archivo default.db a nueva base
+        shutil.copyfile(ruta_default, ruta_nueva_bd)
+
+        # Ahora conectar a la nueva base para vaciar tablas (objetos, cajas, cajas_borradas)
+        import sqlite3
+        conn = sqlite3.connect(ruta_nueva_bd)
+        cur = conn.cursor()
+        cur.execute('DELETE FROM objetos')
+        cur.execute('DELETE FROM cajas')
+        cur.execute('DELETE FROM cajas_borradas')
+        conn.commit()
+        conn.close()
+
+        flash(f'Base de datos "{nombre_nueva_bd}" creada correctamente y vaciada.', 'success')
+    except Exception as e:
+        flash(f'Error al crear la base de datos: {e}', 'error')
+
+    return redirect(url_for('main.seleccionar_db'))
+
+
 
 
 
