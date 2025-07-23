@@ -620,8 +620,51 @@ def buscar_objeto(caja_id=None):
         caja_actual_id=caja_id
     )
 
+@bp.route('/buscar_caja', methods=['GET'])
+def buscar_caja():
+    db = get_db()
 
-@bp.route('/cajas/<int:caja_id>/borrar_objetos', methods=['POST'])
+    codigo = request.args.get('codigo')
+    busqueda_caja = request.args.get('busqueda_caja')
+
+    if codigo:
+        # Buscar caja por ID exacto
+        try:
+            caja_id = int(codigo)
+        except (ValueError, TypeError):
+            return {'error': 'Código inválido'}, 400
+
+        caja = db.execute('SELECT * FROM cajas WHERE id = ?', (caja_id,)).fetchone()
+        if caja:
+            return {'redirect_url': url_for('main.ver_caja', caja_id=caja_id)}
+        else:
+            return {'error': 'Caja no encontrada'}, 404
+
+    elif busqueda_caja:
+        termino = busqueda_caja.strip()
+        if termino:
+            cajas_buscadas = db.execute(
+                '''
+                SELECT * FROM cajas
+                WHERE CAST(id AS TEXT) LIKE ?
+                OR LOWER(nombre) LIKE ?
+                ''',
+                (f'%{termino}%', f'%{termino.lower()}%')
+            ).fetchall()
+
+            if cajas_buscadas:
+                # Devuelve resultados o maneja como quieras, por ejemplo:
+                return {'cajas': [dict(id=c['id'], nombre=c['nombre']) for c in cajas_buscadas]}
+            else:
+                return {'error': 'No se encontraron cajas'}, 404
+
+    else:
+        return {'error': 'Parámetro requerido'}, 400
+
+
+
+
+
 def borrar_objetos(caja_id):
 
     

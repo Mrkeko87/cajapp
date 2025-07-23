@@ -1,13 +1,31 @@
 function onScanSuccess(decodedText, decodedResult) {
-  document.getElementById('read-result').innerText = decodedText;
-  // Aquí puedes hacer una llamada fetch para obtener detalles si quieres:
-  // fetch(`/api/objeto/${decodedText}`).then(res => res.json()).then(data => console.log(data));
+    const resultElement = document.getElementById('read-result');
+    resultElement.innerText = decodedText;
+
+    fetch(`/buscar_caja?codigo=${encodeURIComponent(decodedText)}`)
+        .then(response => {
+            if (response.status === 404) {
+                resultElement.innerText = "❌ Caja no encontrada";
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.redirect_url) {
+                resultElement.innerText = "📦 Caja encontrada, redirigiendo...";
+                setTimeout(() => {
+                    window.location.href = data.redirect_url;
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            console.error("Error al buscar la caja:", error);
+            resultElement.innerText = "⚠️ Error al buscar la caja";
+        });
 }
 
-function onScanError(errorMessage) {
-  // Puedes manejar errores aquí si quieres
-}
-
-let html5QrcodeScanner = new Html5QrcodeScanner(
-  "qr-reader", { fps: 10, qrbox: 250 });
-html5QrcodeScanner.render(onScanSuccess, onScanError);
+let html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
+    fps: 10,
+    qrbox: 250
+});
+html5QrcodeScanner.render(onScanSuccess);
