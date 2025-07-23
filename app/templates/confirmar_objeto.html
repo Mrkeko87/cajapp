@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar añadido de objeto{% endblock %}
+
+{% block content %}
+  <div class="alert alert-warning">
+    <h4>Este objeto ya existe en otras cajas</h4>
+    <p>El objeto <strong>{{ nombre }}</strong> ya se encuentra en las siguientes cajas:</p>
+
+    <ul class="list-group mb-3">
+      {% for obj in coincidencias %}
+        <li class="list-group-item">
+          Caja ID {{ obj.caja_id }} – <strong>{{ obj.caja_nombre }}</strong> ({{ obj.cantidad }} unidades)
+        </li>
+      {% endfor %}
+    </ul>
+
+    <p>¿Deseas añadir <strong>{{ cantidad }}</strong> unidades igualmente a esta caja?</p>
+  </div>
+
+  <form method="post" action="{{ url_for('main.add_objeto', caja_id=caja_actual_id) }}">
+    <input type="hidden" name="nombre" value="{{ nombre }}">
+    <input type="hidden" name="cantidad" value="{{ cantidad }}">
+    <input type="hidden" name="confirmar" value="si">
+
+    <button type="submit" class="btn btn-primary">Sí, añadir</button>
+    <a href="{{ url_for('main.ver_caja', caja_id=caja_actual_id) }}" class="btn btn-secondary">Cancelar</a>
+
+    <div class="volver-centro">
+        <a href="javascript:history.back()" class="btn btn-secondary me-2">← Volver</a>        
+        <a href="/cajas" class="btn-brown">Ir a cajas📦</a>
+
+  </form>
+{% endblock %}

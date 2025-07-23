@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Buscar Objeto{% endblock %}
+
+{% block content %}
+<h2>Buscar Objeto</h2>
+
+<form method="POST" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="termino" class="form-control" placeholder="Buscar objeto" value="{{ termino }}">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+</form>
+
+{% if resultado %}
+    <h4>Resultados encontrados:</h4>
+    <ul class="list-group mb-4">
+        {% for obj in resultado %}
+            <li class="list-group-item">
+                <a href="{{ url_for('main.ver_caja', caja_id=obj.caja_id) }}">
+                    {{ obj.nombre }}
+                </a>
+                – Cantidad: {{ obj.cantidad }} – Caja: {{ obj.caja_nombre }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+{% if modo_crear %}
+    <h4>Crear nuevo objeto: "{{ termino }}"</h4>
+    <form method="POST" class="mt-3">
+        <input type="hidden" name="termino" value="{{ termino }}">
+        <input type="hidden" name="confirmar_creacion" value="1">
+
+        <div class="mb-3">
+            <label for="caja_id" class="form-label">Selecciona una caja existente:</label>
+            <select name="caja_id" id="caja_id" class="form-select">
+                <option value="">-- Ninguna --</option>
+                {% for caja in cajas %}
+                    <option value="{{ caja['id'] }}">{{ caja['nombre'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="nueva_caja" class="form-label">O crea una nueva caja:</label>
+            <input type="text" name="nueva_caja" id="nueva_caja" class="form-control" placeholder="Nombre de nueva caja">
+        </div>
+
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad inicial:</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" min="0" value="0" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Crear Objeto</button>
+    </form>
+{% endif %}
+
+<div class="volver-centro">
+    <a href="javascript:history.back()" class="btn btn-secondary me-2">← Volver</a>
+    <a href="{{ url_for('main.index') }}" class="btn-brown">Ir a cajas📦</a>
+</div>
+{% endblock %}

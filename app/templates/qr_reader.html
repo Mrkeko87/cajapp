@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Escanear QR{% endblock %}
+{% block content %}
+<h1>Escanear QR desde cámara</h1>
+<div id="qr-reader" style="width: 100%; max-width: 400px;"></div>
+<p>Resultado: <span id="read-result">-</span></p>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script src="{{ url_for('static', filename='js/qr_reader.js') }}"></script>
+<div class="volver-centro">
+        <a href="javascript:history.back()" class="btn btn-secondary me-2">← Volver</a>        
+        <a href="/cajas" class="btn-brown">Ir a cajas📦</a>
+
+</div>  
+
+
+
+
+{% endblock %}

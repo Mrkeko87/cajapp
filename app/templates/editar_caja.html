@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Editar Caja{% endblock %}
+{% block content %}
+<h1>Editar caja: {{ caja.nombre }}</h1>
+
+<form method="post">
+  <input type="text" name="nombre" value="{{ caja.nombre }}" required />
+  <button type="submit">Guardar cambios</button>
+  <a href="{{ url_for('main.cajas') }}">Cancelar</a>
+
+  <div class="volver-centro">
+        <a href="javascript:history.back()" class="btn btn-secondary me-2">← Volver</a>        
+        <a href="/cajas" class="btn-brown">Ir a cajas📦</a>
+</form>
+{% endblock %}

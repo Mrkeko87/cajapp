@@ -1,0 +1,277 @@
+/* Base */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #222;
+}
+
+nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 600;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+form input,
+form select {
+  padding: 10px;
+  margin-right: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+button:focus {
+  outline: 3px solid #80bdff;
+  outline-offset: 2px;
+}
+
+/* Botón Buscar - Verde */
+button.btn-success {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+button.btn-success:hover {
+  background-color: #218838;
+}
+
+/* Botón Crear - Verde Claro */
+button.btn-success-light {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+button.btn-success-light:hover {
+  background-color: #388e3c;
+}
+
+/* Botón Mover (Ícono de mover) */
+button.btn-move {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+button.btn-move:hover {
+  background-color: #0056b3;
+}
+
+/* Botón Borrar (Ícono de papelera) */
+button.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+button.btn-delete:hover {
+  background-color: #c82333;
+}
+
+/* Íconos para botones */
+button i {
+  font-size: 20px;  /* Tamaño adecuado para los íconos */
+  color: white;
+  margin: 0;
+}
+
+button.btn-move i,
+button.btn-delete i {
+  font-size: 20px;
+}
+
+/* Mostrar flechas en Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+  appearance: auto;
+  margin: 0;
+  display: block;
+}
+
+/* Mostrar flechas en Firefox */
+input[type=number] {
+  -webkit-appearance: number-input;
+  -moz-appearance: number-input;
+  appearance: number-input;
+}
+
+/* Asegurar tamaño mínimo para que las flechas tengan espacio */
+input[type=number].cantidad-input {
+  min-width: 60px;
+}
+
+.input-stepper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.input-stepper button {
+  width: 30px;
+  height: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.input-stepper input[type=number] {
+  text-align: center;
+  width: 60px;
+  padding: 5px;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.volver-centro {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+
+.volver-centro .btn {
+  display: inline-block;
+}
+
+.btn-brown {
+  background-color: #8B4513; /* marrón oscuro */
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* espacio entre icono y texto */
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none; /* para enlaces */
+  transition: background-color 0.3s ease;
+}
+
+.btn-brown:hover,
+.btn-brown:focus {
+  background-color: #5A2E0C; /* marrón más oscuro al hover/focus */
+  color: white;
+  outline: none;
+}
+
+
+/* Botón Verde Grande */
+button.btn-success-lg {
+  background-color: #28a745; /* verde Bootstrap */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button.btn-success-lg:hover {
+  background-color: #218838; /* verde oscuro al hover */
+}
+
+.btn-brown {
+  background-color: #6f4e37; /* marrón oscuro */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.btn-brown:hover,
+.btn-brown:focus {
+  background-color: #5a3e2a;
+  color: white;
+  text-decoration: none;
+}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Cajas{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Lista de Cajas</h1>
+
+<div class="row g-3 mb-4 align-items-stretch">
+  <!-- Crear caja -->
+  <div class="col-md-6">
+    <form method="post" class="h-100">
+      <div class="input-group">
+        <input name="nombre" placeholder="Nombre nueva de caja" required class="form-control" />
+        <button type="submit" class="btn-success-lg"><span>&#10003;</span></button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Buscar objeto -->
+  <div class="col-md-6">
+    <form method="get" action="{{ url_for('main.cajas') }}" class="h-100">
+      <div class="input-group">
+        <input name="termino" placeholder="Buscar objeto..." class="form-control" value="{{ termino or '' }}" required />
+        <button type="submit" class="btn btn-primary btn-lg"><span>&#128269;</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Buscar caja por ID o nombre -->
+<div class="col-md-4 mb-4">
+  <form method="get" action="{{ url_for('main.cajas') }}" class="h-100">
+    <div class="input-group">
+      <input name="busqueda_caja" placeholder="Buscar caja por ID o nombre" class="form-control" value="{{ termino_caja or '' }}" required />
+      <button type="submit" class="btn btn-primary btn-lg"><span>&#128269;</span></button>
+    </div>
+  </form>
+</div>
+
+{% if cajas_buscadas is defined and termino_caja %}
+  <h4 class="mt-3">Cajas encontradas:</h4>
+  {% if cajas_buscadas %}
+    <ul class="list-group mb-4">
+      {% for caja in cajas_buscadas %}
+        <li class="list-group-item">
+          <a href="{{ url_for('main.ver_caja', caja_id=caja.id) }}" class="text-decoration-none">
+            <strong>ID {{ caja.id }}</strong> - {{ caja.nombre }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="alert alert-warning">No se encontraron cajas para "{{ termino_caja }}"</div>
+  {% endif %}
+{% endif %}
+
+
+
+  <!-- Resultados de búsqueda de objetos -->
+  {% if resultado %}
+    <h4>Objetos encontrados:</h4>
+    <ul class="list-group mb-4">
+      {% for obj in resultado %}
+        <li class="list-group-item">
+          <strong>{{ obj['nombre'] }}</strong> ({{ obj['cantidad'] }}) en la caja <strong>{{ obj['caja_nombre'] }}</strong>
+        </li>
+      {% endfor %}
+    </ul>
+  {% elif termino %}
+    <div class="alert alert-warning">No se encontraron resultados para "{{ termino }}"</div>
+
+  {% if modo_crear %}
+    <h4>Crear nuevo objeto: "{{ termino }}"</h4>
+    <form method="post" class="mt-3">
+      <input type="hidden" name="termino" value="{{ termino }}">
+      <input type="hidden" name="confirmar_creacion" value="1">
+
+      <div class="mb-3">
+        <label for="caja_id" class="form-label">Selecciona una caja existente:</label>
+        <select name="caja_id" id="caja_id" class="form-select">
+          <option value="">-- Ninguna --</option>
+          {% for caja in cajas %}
+            <option value="{{ caja['id'] }}">{{ caja['nombre'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="nueva_caja" class="form-label">O crea una nueva caja:</label>
+        <input type="text" name="nueva_caja" id="nueva_caja" class="form-control" placeholder="Nombre de nueva caja">
+      </div>
+
+      <div class="mb-3">
+        <label for="cantidad" class="form-label">Cantidad inicial:</label>
+        <input type="number" name="cantidad" id="cantidad" class="form-control" min="0" value="0" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg"><span>CREAR CAJA</span></button>
+    </form>
+  {% endif %}
+{% endif %}
+
+<!-- Lista de cajas -->
+<ul class="list-group mb-4">
+  {% for caja in cajas %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a href="{{ url_for('main.ver_caja', caja_id=caja.id) }}" class="flex-grow-1 text-decoration-none">
+        <strong>ID {{ caja.id }}:</strong> {{ caja.nombre }}
+      </a>
+      <div>
+        <a href="{{ url_for('main.ver_qr_caja', caja_id=caja.id) }}" target="_blank" class="btn btn-sm btn-outline-info">Ver QR</a>
+        <a href="{{ url_for('main.editar_caja', caja_id=caja.id) }}" class="btn btn-sm btn-outline-secondary me-2">Editar</a>
+        <form action="{{ url_for('main.eliminar_caja', caja_id=caja.id) }}" method="post" class="d-inline" onsubmit="return confirmarYDesactivar('¿Seguro que quieres eliminar esta caja?');">
+          <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+        </form>
+      </div>
+    </li>
+  {% else %}
+    <li class="list-group-item text-muted fst-italic">No hay cajas aún.</li>
+  {% endfor %}
+</ul>
+
+
+
+
+
+{% endblock %}
