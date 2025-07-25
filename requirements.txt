@@ -28,3 +28,5 @@ Flask-RESTPlus
 Flask-SocketIO
 Flask-Celery-Helper
 Flask-Redis
+psycopg2-binary
+SQLAlchemy-Utils
