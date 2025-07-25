@@ -670,7 +670,7 @@ def vaciar_bd():
         db.execute('DELETE FROM objetos')
         db.execute('DELETE FROM cajas')
         db.execute('DELETE FROM cajas_borradas')
-        db.execute('DELETE FROM sq')
+        db.execute('DELETE FROM sqlite_sequence')  # Resetea el autoincremento
         
         
         # Si tienes más tablas, agregalas aquí
